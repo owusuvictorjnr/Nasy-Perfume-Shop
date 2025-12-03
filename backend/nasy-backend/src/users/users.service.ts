@@ -1,30 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/user.entity';
-import { Repository } from 'typeorm/browser/repository/Repository.js';
+import { Repository } from 'typeorm';
+import * as admin from 'firebase-admin';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  async findByFirebaseId(uid: string) {
-    return this.repo.findOne({ where: { firebaseUid: uid } });
-  }
+  async syncFirebaseUser(decoded: admin.auth.DecodedIdToken) {
+    const firebaseUid = decoded.uid;
 
-  async syncFirebaseUser(data: { uid: string; email?: string; name?: string }) {
-    let user = await this.findByFirebaseId(data.uid);
+    // Check if exists
+    let user = await this.repo.findOne({ where: { firebaseUid } });
 
-    if (!user) {
-      const nameParts = (data.name ?? '').split(' ');
-      user = this.repo.create({
-        firebaseUid: data.uid,
-        email: data.email,
-        firstName: nameParts[0] ?? '',
-        middleName: nameParts.length === 3 ? nameParts[1] : '',
-        lastName: nameParts.length >= 2 ? nameParts.slice(-1)[0] : '',
-      });
-      return this.repo.save(user);
+    if (user) {
+      return user;
     }
-    return user;
+
+    // Create user
+    const email = typeof decoded.email === 'string' ? decoded.email : undefined;
+    const nameFromToken =
+      typeof decoded.name === 'string' ? decoded.name : undefined;
+    const provider =
+      decoded.firebase && typeof decoded.firebase.sign_in_provider === 'string'
+        ? decoded.firebase.sign_in_provider
+        : 'unknown';
+    const avatar =
+      typeof decoded.picture === 'string' ? decoded.picture : undefined;
+
+    user = this.repo.create({
+      firebaseUid,
+      email,
+      name: nameFromToken ?? (email ? email.split('@')[0] : undefined),
+      provider,
+      avatar,
+    } as Partial<User>);
+
+    return await this.repo.save(user);
   }
 }
