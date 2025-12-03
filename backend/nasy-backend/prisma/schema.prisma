@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User {
+  id        Int     @id @default(autoincrement())
+  uid       String  @unique                       // Firebase UID
+  email     String  @unique
+  name      String?
+  picture   String?
+  provider  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+   // Add other fields you need
+  firstName      String?
+  middleName     String?
+  lastName       String?
+  profileImage   String?
+  phoneNumber    String?
+  
+  @@map("users") // Optional: map to "users" table in database
+}
