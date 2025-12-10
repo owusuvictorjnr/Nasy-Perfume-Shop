@@ -3,13 +3,28 @@ import * as admin from 'firebase-admin';
 
 @Injectable()
 export class FirebaseService {
-  async verifyToken(token: string) {
-    try {
-      return await admin.auth().verifyIdToken(token);
-    } catch (error) {
-      // Log the error to ensure the variable is used and aid debugging
-      console.error('Firebase token verification failed:', error);
-      return null;
+  private firebaseApp: admin.app.App;
+
+  constructor() {
+    if (admin.apps.length === 0) {
+      const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+      if (!serviceAccountJson) {
+        throw new Error(
+          'FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not set',
+        );
+      }
+      const serviceAccount = JSON.parse(
+        serviceAccountJson,
+      ) as admin.ServiceAccount;
+      this.firebaseApp = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+    } else {
+      this.firebaseApp = admin.app();
     }
+  }
+
+  async verifyIdToken(idToken: string) {
+    return await this.firebaseApp.auth().verifyIdToken(idToken);
   }
 }

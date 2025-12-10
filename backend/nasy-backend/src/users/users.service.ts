@@ -1,42 +1,110 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as admin from 'firebase-admin';
-import { User } from 'src/users/user.entity';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(private prisma: PrismaService) {}
 
   async syncFirebaseUser(decoded: admin.auth.DecodedIdToken) {
     const firebaseUid = decoded.uid;
 
-    // Check if exists
-    let user = await this.repo.findOne({ where: { firebaseUid } });
+    // Check if user exists by Firebase UID
+    let user = await this.prisma.user.findFirst({
+      where: { id: firebaseUid },
+    });
 
     if (user) {
       return user;
     }
 
-    // Create user
-    const email = typeof decoded.email === 'string' ? decoded.email : undefined;
+    // Extract user data from Firebase token
+    const email = typeof decoded.email === 'string' ? decoded.email : '';
     const nameFromToken =
       typeof decoded.name === 'string' ? decoded.name : undefined;
-    const provider =
-      decoded.firebase && typeof decoded.firebase.sign_in_provider === 'string'
-        ? decoded.firebase.sign_in_provider
-        : 'unknown';
     const avatar =
       typeof decoded.picture === 'string' ? decoded.picture : undefined;
 
-    user = this.repo.create({
-      firebaseUid,
-      email,
-      name: nameFromToken ?? (email ? email.split('@')[0] : undefined),
-      provider,
-      avatar,
-    } as Partial<User>);
+    // Split name into first and last name
+    let firstName = '';
+    let lastName = '';
+    if (nameFromToken) {
+      const nameParts = nameFromToken.split(' ');
+      firstName = nameParts[0] || '';
+      lastName = nameParts.slice(1).join(' ') || '';
+    } else if (email) {
+      firstName = email.split('@')[0];
+    }
 
-    return await this.repo.save(user);
+    // Create new user with Firebase UID as the primary ID
+    user = await this.prisma.user.create({
+      data: {
+        id: firebaseUid, // Use Firebase UID as primary key
+        email,
+        password: '', // Empty password since we use Firebase auth
+        firstName,
+        lastName,
+        avatar,
+        role: 'CUSTOMER',
+      },
+    });
+
+    return user;
+  }
+
+  async findById(id: string) {
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        addresses: true,
+        orders: {
+          include: {
+            items: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+  }
+
+  async findByEmail(email: string) {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
+  }
+
+  async updateProfile(
+    userId: string,
+    data: {
+      firstName?: string;
+      lastName?: string;
+      phone?: string;
+      avatar?: string;
+    },
+  ) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data,
+    });
+  }
+
+  async getUserOrders(userId: string) {
+    return this.prisma.order.findMany({
+      where: { userId },
+      include: {
+        items: {
+          include: {
+            product: true,
+            variant: true,
+          },
+        },
+        shippingAddress: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 }

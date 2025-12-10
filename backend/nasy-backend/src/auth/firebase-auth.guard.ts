@@ -6,10 +6,15 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { FirebaseService } from './firebase.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FirebaseAuthGuard implements CanActivate {
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(
+    private firebaseService: FirebaseService,
+    private usersService: UsersService,
+  ) {}
+
   async canActivate(context: ExecutionContext) {
     const req = context
       .switchToHttp()
@@ -20,11 +25,15 @@ export class FirebaseAuthGuard implements CanActivate {
       throw new UnauthorizedException('Missing Authorization header');
 
     const token = header.replace('Bearer ', '').trim();
-    const decoded = (await this.firebaseService.verifyToken(token)) as unknown;
+    const decoded = await this.firebaseService.verifyIdToken(token);
 
     if (!decoded) throw new UnauthorizedException('Invalid or expired token');
 
-    req.user = decoded;
+    // Sync user with database
+    const user = await this.usersService.syncFirebaseUser(decoded);
+
+    // Attach full user object to request
+    req.user = user;
     return true;
   }
 }
