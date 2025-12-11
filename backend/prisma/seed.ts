@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { v4 as uuid } from 'uuid';
 import { products, users } from '../src/data/data';
 
 const prisma = new PrismaClient();
@@ -13,6 +14,7 @@ async function main() {
       where: { email: user.email },
       update: {},
       create: {
+        uid: uuid(),
         email: user.email,
         password: user.password,
         firstName: user.name.split(' ')[0],

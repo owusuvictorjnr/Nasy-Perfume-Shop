@@ -40,6 +40,7 @@ export class UsersService {
     user = await this.prisma.user.create({
       data: {
         id: firebaseUid, // Use Firebase UID as primary key
+        uid: firebaseUid, // Also set uid field
         email,
         password: '', // Empty password since we use Firebase auth
         firstName,
