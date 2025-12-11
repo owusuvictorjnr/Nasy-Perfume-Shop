@@ -1,7 +1,11 @@
 import axios from "axios";
 import { auth } from "../firebase/firebase";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_BASE_URL) {
+  console.warn("⚠️ API_BASE_URL is not defined! API calls will fail.");
+}
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
