@@ -98,6 +98,7 @@ async function main() {
         sku: `SKU-${product.slug}-${Math.floor(Math.random() * 1000)}`, // Generate a SKU
         averageRating: product.avgRating,
         reviewCount: product.numReviews,
+        status: 'PUBLISHED',
       },
       create: {
         name: product.name,
@@ -114,6 +115,7 @@ async function main() {
         sku: `SKU-${product.slug}-${Math.floor(Math.random() * 1000)}`,
         averageRating: product.avgRating,
         reviewCount: product.numReviews,
+        status: 'PUBLISHED',
       },
     });
   }
