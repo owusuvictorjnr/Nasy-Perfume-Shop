@@ -23,7 +23,7 @@ export default function CategoriesNav() {
   return (
     <nav className="bg-gradient-to-r from-purple-50 to-white border-b border-gray-200 sticky top-16 z-40 shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-center gap-1 py-3">
+        <div className="flex items-center gap-2 py-3 overflow-x-auto flex-nowrap sm:flex-wrap sm:justify-center">
           {categories.map((category) => {
             const subcats = getSubcategoriesForCategory(category);
             const hasSubcats = subcats.length > 1;
