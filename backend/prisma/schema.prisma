@@ -102,12 +102,12 @@ model Product {
   manageStock     Boolean       @default(true)
   
   // Product Type
-  type            ProductType   @default(SIMPLE)
+  type            String        @default("SIMPLE")
   isVirtual       Boolean       @default(false)
   isDownloadable  Boolean       @default(false)
   
   // Visibility
-  status          ProductStatus @default(DRAFT)
+  status          String        @default("DRAFT")
   isFeatured      Boolean       @default(false)
   isNew           Boolean       @default(false)
   isBestSeller    Boolean       @default(false)

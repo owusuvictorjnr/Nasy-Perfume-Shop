@@ -103,11 +103,6 @@ export class ProductsService {
         orderBy,
         include: {
           category: true,
-          tags: true,
-          variants: {
-            take: 1,
-            orderBy: { price: 'asc' },
-          },
         },
       }),
       this.prisma.product.count({ where }),
