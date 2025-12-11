@@ -185,71 +185,74 @@ export default function Navigation() {
               </svg>
             </Link>
 
-            {user ? (
-              <div className="relative group">
-                <button className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition">
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    {user.email?.charAt(0).toUpperCase()}
-                  </div>
-                  <svg
-                    className="w-4 h-4 text-gray-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                    />
-                  </svg>
-                </button>
-
-                {/* Dropdown Menu */}
-                <div className="absolute right-0 mt-0 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  <Link
-                    href="/account/profile"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg"
-                  >
-                    My Profile
-                  </Link>
-                  <Link
-                    href="/orders/history"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Order History
-                  </Link>
-                  <Link
-                    href="/wishlist"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Wishlist
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-b-lg border-t"
-                  >
-                    Logout
+            {/* User Auth - Hidden on Mobile, visible on Desktop */}
+            <div className="hidden md:block">
+              {user ? (
+                <div className="relative group">
+                  <button className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition">
+                    <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      {user.email?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                    <svg
+                      className="w-4 h-4 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                      />
+                    </svg>
                   </button>
+
+                  {/* Dropdown Menu */}
+                  <div className="absolute right-0 mt-0 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                    <Link
+                      href="/account/profile"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg"
+                    >
+                      My Profile
+                    </Link>
+                    <Link
+                      href="/orders/history"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Order History
+                    </Link>
+                    <Link
+                      href="/wishlist"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Wishlist
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-b-lg border-t"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="px-4 py-2 text-gray-700 hover:text-purple-600 font-medium"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium"
-                >
-                  Register
-                </Link>
-              </>
-            )}
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/login"
+                    className="px-4 py-2 text-gray-700 hover:text-purple-600 font-medium"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
