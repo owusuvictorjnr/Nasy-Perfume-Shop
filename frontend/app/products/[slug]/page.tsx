@@ -7,6 +7,7 @@ import { useAddToCart } from "@/features/cart/hooks/use-cart";
 import { useAddToWishlist } from "@/features/wishlist/hooks/use-wishlist";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -73,8 +74,35 @@ export default function ProductDetailPage() {
             Product Not Found
           </h1>
           <p className="text-gray-600 mb-4">
-            The product you're looking for doesn't exist.
+            The product you&rsquo;re looking for doesn&rsquo;t exist.
           </p>
+
+          {/* Debug Info for Production Issues */}
+          <div className="bg-red-50 p-4 rounded-lg mb-6 text-left max-w-md mx-auto border border-red-100">
+            <p className="text-xs font-semibold text-red-800 mb-2 uppercase tracking-wide">
+              Debug Info
+            </p>
+            <div className="space-y-1 text-xs font-mono text-red-700">
+              <p>
+                Slug: <span className="font-bold">{slug}</span>
+              </p>
+              <p>
+                API URL:{" "}
+                <span className="break-all">
+                  {process.env.NEXT_PUBLIC_API_URL || "UNDEFINED"}
+                </span>
+              </p>
+              {error && (
+                <p>
+                  Error:{" "}
+                  {error instanceof Error
+                    ? error.message
+                    : JSON.stringify(error)}
+                </p>
+              )}
+            </div>
+          </div>
+
           <Link
             href="/products"
             className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
@@ -113,7 +141,9 @@ export default function ProductDetailPage() {
             {/* Main Image */}
             <div className="aspect-square bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
               {product.images && product.images[activeImage] ? (
-                <img
+                <Image
+                  width={500}
+                  height={500}
                   src={product.images[activeImage]}
                   alt={product.name}
                   className="w-full h-full object-cover"
@@ -138,7 +168,9 @@ export default function ProductDetailPage() {
                         : "border-transparent"
                     }`}
                   >
-                    <img
+                    <Image
+                      width={100}
+                      height={100}
                       src={image}
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-cover"
