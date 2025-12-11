@@ -1,32 +1,58 @@
 import * as bcrypt from 'bcryptjs';
 
 // Image constants - using Cloudinary placeholder images
-const IMG1 = 'https://res.cloudinary.com/demo/image/fetch/https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/1200px-Good_Food_Display_-_NCI_Visuals_Online.jpg';
-const IMG2 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500';
-const IMG3 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=500';
-const IMG4 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1624293064800-fd5c528d26b8?w=500';
-const IMG5 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1599599810694-a5f96ba39e96?w=500';
-const IMG6 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1530268729831-4be0ea9b4d71?w=500';
-const IMG7 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=500';
-const IMG8 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1544527150e-38a3b8cb5cd3?w=500';
-const IMG9 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1608895c18d2d5b8bf88fb3e2b7199d6?w=500';
-const IMG10 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1572365992253-3cb3e56dd362?w=500';
-const IMG11 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1587427172515-f1e1ad6e3e7f?w=500';
-const IMG12 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1513909456840-1686fbe4e642?w=500';
-const IMG13 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500';
-const IMG15 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=500';
-const IMG16 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500';
-const IMG17 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1598291837394-e56144267b48?w=500';
-const IMG18 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1617395829329-4e04a34e9d88?w=500';
-const IMG19 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1514306688772-511149ffc469?w=500';
-const IMG20 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1552083974-ceb0db206d5d?w=500';
-const IMG21 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=500';
-const IMG22 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1514306688772-511149ffc469?w=500';
-const IMG23 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1581578731548-c64695c952952?w=500';
-const IMG24 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500';
-const IMG25 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1576091160550-112173e7f869?w=500';
-const IMG26 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1596599810694-a5f96ba39e96?w=500';
-const IMG27 = 'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1595521624512-6213ff36e0ee?w=500';
+const IMG1 =
+  'https://res.cloudinary.com/demo/image/fetch/https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/1200px-Good_Food_Display_-_NCI_Visuals_Online.jpg';
+const IMG2 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500';
+const IMG3 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=500';
+const IMG4 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1624293064800-fd5c528d26b8?w=500';
+const IMG5 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1599599810694-a5f96ba39e96?w=500';
+const IMG6 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1530268729831-4be0ea9b4d71?w=500';
+const IMG7 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=500';
+const IMG8 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1544527150e-38a3b8cb5cd3?w=500';
+const IMG9 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1608895c18d2d5b8bf88fb3e2b7199d6?w=500';
+const IMG10 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1572365992253-3cb3e56dd362?w=500';
+const IMG11 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1587427172515-f1e1ad6e3e7f?w=500';
+const IMG12 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1513909456840-1686fbe4e642?w=500';
+const IMG13 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500';
+const IMG15 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=500';
+const IMG16 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500';
+const IMG17 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1598291837394-e56144267b48?w=500';
+const IMG18 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1617395829329-4e04a34e9d88?w=500';
+const IMG19 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1514306688772-511149ffc469?w=500';
+const IMG20 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1552083974-ceb0db206d5d?w=500';
+const IMG21 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=500';
+const IMG22 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1514306688772-511149ffc469?w=500';
+const IMG23 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1581578731548-c64695c952952?w=500';
+const IMG24 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500';
+const IMG25 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1576091160550-112173e7f869?w=500';
+const IMG26 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1596599810694-a5f96ba39e96?w=500';
+const IMG27 =
+  'https://res.cloudinary.com/demo/image/fetch/https://images.unsplash.com/photo-1595521624512-6213ff36e0ee?w=500';
 
 // Helper functions
 const toSlug = (text: string) =>
