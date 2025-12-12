@@ -56,6 +56,7 @@ export function useProduct(slug: string) {
       return data;
     },
     enabled: !!slug,
+    retry: 1, // Fail fast on error
   });
 }
 
